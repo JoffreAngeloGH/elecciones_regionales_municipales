@@ -1,0 +1,22 @@
+---
+// Botones de utilidad. La confirmación de "Reiniciar" está ya en el HTML
+// (oculta): así no dependemos de confirm(), que algunos navegadores bloquean.
+---
+
+<div class="herramientas">
+  <button class="btn" type="button" data-accion="pantalla">Mantener pantalla encendida</button>
+  <button class="btn peligro" type="button" data-accion="reiniciar">Reiniciar todo</button>
+</div>
+<div class="confirmar" data-confirmar hidden>
+  ¿Borrar todas las marcas y números?
+  <button class="btn peligro" type="button" data-accion="reiniciar-si">Sí, borrar</button>
+  <button class="btn" type="button" data-accion="reiniciar-no">Cancelar</button>
+</div>
+
+<style>
+  .herramientas { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .btn { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 9px 14px; cursor: pointer; font-size: 0.9rem; }
+  .btn:hover { border-color: var(--accent); }
+  .peligro { color: var(--warn); }
+  .confirmar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 0.9rem; background: var(--warn-soft); color: var(--warn); padding: 10px 12px; border-radius: 8px; }
+</style>

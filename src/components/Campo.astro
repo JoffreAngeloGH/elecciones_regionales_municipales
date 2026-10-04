@@ -1,0 +1,51 @@
+---
+// Una casilla numérica o de hora del acta.
+// La misma casilla (ej. "votaron") puede aparecer en varios pasos y en la
+// pestaña Números: todas comparten data-campo y el script las mantiene iguales.
+import type { CampoId } from "../data/etapas";
+import { CAMPOS } from "../lib/campos";
+
+interface Props {
+  campo: CampoId;
+  ctx: string; // de dónde se pinta (id del ítem o "datos"), para que el id HTML sea único y estable
+  destacado?: boolean;
+}
+const { campo, ctx, destacado = false } = Astro.props;
+const def = CAMPOS[campo];
+const id = `f-${campo}-${ctx}`;
+---
+
+<div class:list={["campo", { destacado }]}>
+  <label for={id}>{def.etiqueta}</label>
+  <div class="fila">
+    {def.tipo === "hora"
+      ? <input type="time" id={id} data-campo={campo} />
+      : <input type="number" inputmode="numeric" min="0" placeholder="0" id={id} data-campo={campo} />}
+    <span class="letras" data-letras={campo}></span>
+    <span class="aviso" data-aviso={campo} hidden></span>
+  </div>
+  {def.ayuda && <span class="ayuda">{def.ayuda}</span>}
+</div>
+
+<style>
+  .campo { display: grid; gap: 4px; margin-top: 4px; cursor: default; }
+  label { font-size: 0.8rem; color: var(--muted); }
+  .destacado label { font-size: 0.9rem; color: var(--ink); font-weight: 500; }
+  .fila { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  input {
+    width: 7.5rem;
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg);
+    font-family: var(--f-mono);
+    font-size: 1.05rem;
+    font-variant-numeric: tabular-nums;
+  }
+  input[type="time"] { width: 8.5rem; }
+  .letras { font-size: 0.85rem; font-style: italic; min-width: 0; }
+  .aviso { font-size: 0.82rem; padding: 2px 8px; border-radius: 6px; font-weight: 500; }
+  .aviso.ok { background: var(--ok-soft); color: var(--ok); }
+  .aviso.mal { background: var(--warn-soft); color: var(--warn); }
+  .ayuda { font-size: 0.78rem; color: var(--muted); }
+</style>

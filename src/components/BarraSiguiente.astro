@@ -1,0 +1,39 @@
+---
+// Barra inferior fija: muestra el siguiente paso pendiente.
+// - Tocar el texto: te lleva a ese paso.
+// - Tocar ✓: lo marca y salta al que sigue.
+---
+
+<div class="barra">
+  <div class="wrap">
+    <button class="ir" type="button" data-accion="ir-siguiente">
+      <small>Siguiente paso</small>
+      <span data-siguiente-texto>—</span>
+    </button>
+    <button class="check" type="button" data-accion="marcar-siguiente" aria-label="Marcar siguiente paso como hecho">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"></path></svg>
+    </button>
+  </div>
+</div>
+
+<style>
+  .barra {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+    background: var(--surface); border-top: 1px solid var(--line);
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+  .wrap { max-width: 720px; margin: 0 auto; display: flex; gap: 10px; align-items: center; }
+  .ir {
+    flex: 1; min-width: 0; text-align: left;
+    background: var(--accent); color: var(--bg);
+    border: 0; border-radius: 10px; padding: 10px 14px; cursor: pointer; display: grid;
+  }
+  small { font-family: var(--f-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.85; }
+  .ir span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+  .check {
+    flex: none; width: 52px; height: 52px; border-radius: 10px;
+    border: 2px solid var(--ok); background: var(--ok-soft); color: var(--ok);
+    cursor: pointer; display: grid; place-items: center;
+  }
+  .check svg { width: 26px; height: 26px; }
+</style>

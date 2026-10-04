@@ -1,0 +1,45 @@
+---
+// Una pestaña completa (Instalación, Sufragio o Escrutinio).
+// Recorre los pasos de la etapa y decide qué componente pinta cada uno.
+import { esReferencia, type Etapa } from "../data/etapas";
+import Paso from "./Paso.astro";
+import FlujoElector from "./FlujoElector.astro";
+import CasosEspeciales from "./CasosEspeciales.astro";
+import LecturaCedula from "./LecturaCedula.astro";
+
+interface Props {
+  etapa: Etapa;
+  visible: boolean;
+}
+const { etapa, visible } = Astro.props;
+
+const FICHAS = { flujo: FlujoElector, especiales: CasosEspeciales, lectura: LecturaCedula };
+
+// Numeración solo de los pasos con casillas (las fichas no cuentan)
+let numero = 0;
+const bloques = etapa.pasos.map((p) =>
+  esReferencia(p) ? { tipo: "ficha" as const, Comp: FICHAS[p.ref] } : { tipo: "paso" as const, paso: p, numero: ++numero },
+);
+---
+
+<section class="panel" data-panel={etapa.id} hidden={!visible}>
+  <p class="intro">{etapa.intro}</p>
+  <div class="leyenda">
+    <span class="rol p">Tú</span> te toca a ti
+    <span class="rol s">Secretario</span>
+    <span class="rol t">3.er miembro</span>
+    <span class="rol todos">Los 3</span>
+  </div>
+  {bloques.map((b) => (b.tipo === "ficha" ? <b.Comp /> : <Paso paso={b.paso} numero={b.numero} />))}
+</section>
+
+<style>
+  .panel { display: grid; gap: 22px; }
+  .intro { color: var(--muted); margin: 0; font-size: 0.95rem; }
+  .leyenda { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 0.82rem; color: var(--muted); margin-top: -12px; }
+  .rol { font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.04em; text-transform: uppercase; padding: 1px 7px; border-radius: 99px; border: 1px solid currentColor; }
+  .rol.p { color: var(--role-p); background: var(--accent-soft); border-color: transparent; }
+  .rol.s { color: var(--role-s); }
+  .rol.t { color: var(--role-t); }
+  .rol.todos { color: var(--muted); }
+</style>

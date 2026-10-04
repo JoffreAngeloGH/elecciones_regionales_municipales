@@ -1,0 +1,81 @@
+---
+// Una casilla de la checklist. Todo el <li> es tocable (área grande = más fácil
+// de acertar con el dedo, ley de Fitts). El estado "marcado" lo pone el script.
+import type { Item } from "../data/etapas";
+import Campo from "./Campo.astro";
+import Sobres from "./Sobres.astro";
+
+interface Props {
+  item: Item;
+}
+const { item } = Astro.props;
+
+const NOMBRE_ROL = { p: "Tú", s: "Secretario", t: "3.er miembro", todos: "Los 3" } as const;
+const roles = [...new Set(item.roles)];
+---
+
+<li class="item" id={`it-${item.id}`} data-item={item.id} role="checkbox" aria-checked="false" tabindex="0">
+  <span class="caja" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"></path></svg>
+  </span>
+  <div class="cuerpo">
+    <span class="texto">{item.texto}</span>
+    {item.detalle && <span class="detalle" set:html={item.detalle} />}
+    {item.sobres && <Sobres />}
+    {item.campos?.map((c) => <Campo campo={c} ctx={item.id} />)}
+    <div class="roles">
+      {roles.map((r) => <span class={`rol ${r}`}>{NOMBRE_ROL[r]}</span>)}
+    </div>
+  </div>
+</li>
+
+<style>
+  .item {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4px 12px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .item:hover { border-color: var(--accent); }
+  .caja {
+    width: 26px; height: 26px;
+    border: 2px solid var(--muted);
+    border-radius: 7px;
+    display: grid; place-items: center;
+    margin-top: 1px;
+    color: var(--surface);
+  }
+  .caja svg { width: 16px; height: 16px; opacity: 0; }
+  .cuerpo { min-width: 0; display: grid; gap: 4px; }
+  .texto { font-weight: 500; }
+  .detalle { font-size: 0.88rem; color: var(--muted); }
+  .detalle :global(strong) { color: var(--ink); font-weight: 600; }
+
+  /* Estados que pone el script */
+  .item.marcado { background: var(--ok-soft); border-color: transparent; }
+  .item.marcado .caja { background: var(--ok); border-color: var(--ok); }
+  .item.marcado .caja svg { opacity: 1; }
+  .item.marcado .texto { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
+  .item.siguiente { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+
+  .roles { display: flex; flex-wrap: wrap; gap: 4px; }
+  .rol {
+    font-family: var(--f-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 1px 7px;
+    border-radius: 99px;
+    border: 1px solid currentColor;
+    line-height: 1.5;
+  }
+  .rol.p { color: var(--role-p); background: var(--accent-soft); border-color: transparent; font-weight: 500; }
+  .rol.s { color: var(--role-s); }
+  .rol.t { color: var(--role-t); }
+  .rol.todos { color: var(--muted); }
+</style>

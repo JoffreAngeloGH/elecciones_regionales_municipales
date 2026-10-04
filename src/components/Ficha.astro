@@ -1,0 +1,37 @@
+---
+// Tarjeta de consulta (no se marca). Si es "plegable" usa <details>,
+// que abre/cierra sin una sola línea de JavaScript.
+interface Props {
+  titulo: string;
+  plegable?: boolean;
+  abierta?: boolean;
+}
+const { titulo, plegable = false, abierta = false } = Astro.props;
+---
+
+{plegable ? (
+  <details class="ficha" open={abierta}>
+    <summary>{titulo}</summary>
+    <div class="contenido"><slot /></div>
+  </details>
+) : (
+  <div class="ficha">
+    <h3>{titulo}</h3>
+    <div class="contenido"><slot /></div>
+  </div>
+)}
+
+<style>
+  .ficha { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+  h3, summary {
+    margin: 0; padding: 14px 16px;
+    font-family: var(--f-display); font-size: 1.15rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.03em;
+  }
+  summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 8px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; font-family: var(--f-mono); color: var(--accent); }
+  details[open] summary::after { content: "–"; }
+  .contenido { padding: 0 16px 14px; display: grid; gap: 8px; font-size: 0.92rem; }
+  .contenido :global(p) { margin: 0; }
+</style>

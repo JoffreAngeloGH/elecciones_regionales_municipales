@@ -1,0 +1,73 @@
+/* Estilos globales: solo los "tokens" (colores, fuentes) y la base.
+   Cada componente trae sus propios estilos con <style> (scoped en Astro). */
+
+/* Paleta clara por defecto. Acento = tinta violeta del tampón. */
+:root {
+  --bg: #f3f4f8;
+  --surface: #ffffff;
+  --surface-2: #eceef5;
+  --line: #d6d9e4;
+  --ink: #171a2b;
+  --muted: #5b6078;
+  --accent: #4b2fa8;
+  --accent-soft: #e7e1fb;
+  --ok: #17794a;
+  --ok-soft: #dcf2e6;
+  --warn: #a3410f;
+  --warn-soft: #fbe6d9;
+  --role-p: #4b2fa8;
+  --role-s: #0e6b84;
+  --role-t: #8a5a00;
+
+  --f-display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+
+/* Si el celular está en modo oscuro, solo se cambian los valores de los tokens */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12131c;
+    --surface: #1b1d2a;
+    --surface-2: #242738;
+    --line: #33374c;
+    --ink: #eceef7;
+    --muted: #9da2bd;
+    --accent: #a995ff;
+    --accent-soft: #2e2752;
+    --ok: #5fd39a;
+    --ok-soft: #173527;
+    --warn: #ffa36d;
+    --warn-soft: #3d2416;
+    --role-p: #a995ff;
+    --role-s: #5ccbe6;
+    --role-t: #f0bf5a;
+    color-scheme: dark;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  /* espacio para la muesca / barra de estado del celular */
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+[hidden] { display: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; }
+}

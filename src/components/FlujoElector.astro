@@ -1,0 +1,36 @@
+---
+// Los 6 pasos que se repiten con cada elector. Es una lista ordenada (<ol>)
+// porque el orden importa; el color indica quién hace cada paso.
+import Ficha from "./Ficha.astro";
+
+const PASOS = [
+  { rol: "p", quien: "Tú", que: "Pide el DNI, verifica la foto y pásalo al Secretario." },
+  { rol: "s", quien: "Secretario", que: "Pregunta su n.º de orden, lo busca en la Lista, confirma foto/datos y te avisa «conforme»." },
+  { rol: "p", quien: "Tú", que: "Entrega la cédula <strong>firmada</strong> y un lapicero; invítalo a la cámara secreta." },
+  { rol: "t", quien: "3.er miembro", que: "Al salir, le indica depositar la cédula <strong>doblada</strong> en el ánfora." },
+  { rol: "s", quien: "Secretario", que: "Le indica dónde firmar y poner su huella en la Lista (tampón)." },
+  { rol: "p", quien: "Tú", que: "Devuélvele el DNI. Terminó." },
+];
+---
+
+<Ficha titulo="Por cada elector · 6 pasos">
+  <ol>
+    {PASOS.map((p) => (
+      <li>
+        <div><span class={`quien ${p.rol}`}>{p.quien}</span><br /><span set:html={p.que} /></div>
+      </li>
+    ))}
+  </ol>
+</Ficha>
+
+<style>
+  ol { list-style: none; margin: 0; padding: 0; counter-reset: f; }
+  li { display: grid; grid-template-columns: 2rem 1fr; gap: 10px; padding: 9px 0; border-top: 1px dashed var(--line); counter-increment: f; }
+  li:first-child { border-top: 0; }
+  li::before { content: counter(f); font-family: var(--f-display); font-weight: 700; font-size: 1.5rem; line-height: 1; color: var(--accent); text-align: center; }
+  li div { min-width: 0; }
+  .quien { font-family: var(--f-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .quien.p { color: var(--role-p); }
+  .quien.s { color: var(--role-s); }
+  .quien.t { color: var(--role-t); }
+</style>

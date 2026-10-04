@@ -1,0 +1,37 @@
+---
+// Página única. Astro genera TODO el HTML en el build (es un sitio estático):
+// los datos de src/data/etapas.ts se convierten en casillas aquí.
+// El único JavaScript que llega al celular es src/scripts/mesa.ts.
+import Layout from "../layouts/Layout.astro";
+import Encabezado from "../components/Encabezado.astro";
+import PanelEtapa from "../components/PanelEtapa.astro";
+import PanelNumeros from "../components/PanelNumeros.astro";
+import Herramientas from "../components/Herramientas.astro";
+import BarraSiguiente from "../components/BarraSiguiente.astro";
+import { ETAPAS } from "../data/etapas";
+---
+
+<Layout title="Mi Mesa de Sufragio">
+  <Encabezado />
+  <main>
+    {ETAPAS.map((etapa, i) => <PanelEtapa etapa={etapa} visible={i === 0} />)}
+    <PanelNumeros />
+    <Herramientas />
+  </main>
+  <BarraSiguiente />
+</Layout>
+
+<script>
+  // Astro empaqueta este import (TypeScript → JS) y lo carga en el navegador.
+  import "../scripts/mesa.ts";
+</script>
+
+<style>
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 16px 16px 120px; /* 120px abajo: espacio para la barra fija */
+    display: grid;
+    gap: 22px;
+  }
+</style>

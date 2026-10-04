@@ -1,0 +1,21 @@
+---
+// Leyenda de los 4 sobres de actas y a quién va cada uno.
+const SOBRES = [
+  { color: "#8a8f99", nombre: "Plomo", destino: "ONPE" },
+  { color: "#d33a2c", nombre: "Rojo", destino: "ONPE" },
+  { color: "#2e9b4f", nombre: "Verde", destino: "JNE" },
+  { color: "#5bb5e6", nombre: "Celeste", destino: "JEE" },
+];
+---
+
+<div class="sobres">
+  {SOBRES.map((s) => (
+    <span class="sobre"><i style={`background:${s.color}`}></i>{s.nombre} · {s.destino}</span>
+  ))}
+</div>
+
+<style>
+  .sobres { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sobre { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; padding: 3px 9px 3px 5px; border-radius: 6px; background: var(--surface-2); }
+  i { width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--line); }
+</style>

@@ -1,0 +1,15 @@
+---
+import Ficha from "./Ficha.astro";
+const FRASES = ["«Voto válido para [organización]»", "«Voto en blanco»", "«Voto nulo»"];
+---
+
+<Ficha titulo="Cómo leer cada cédula" plegable abierta>
+  <p>Tomas la cédula abierta, miras <strong>solo la columna de la elección que se cuenta</strong> y dices en voz alta:</p>
+  {FRASES.map((f) => <div class="frase">{f}</div>)}
+  <p>Luego extiendes la cédula y muestras la cara interna a los personeros. El Secretario traza un palote, agrupando de 5 en 5.</p>
+  <p><strong>Es nulo directo:</strong> cédula rota (no se bota, se cuenta como nulo) o cédula sin tu firma al reverso.</p>
+</Ficha>
+
+<style>
+  .frase { font-family: var(--f-mono); font-size: 0.88rem; background: var(--surface-2); padding: 6px 10px; border-radius: 6px; }
+</style>

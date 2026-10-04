@@ -1,0 +1,32 @@
+---
+// Pestaña "Números": todas las casillas del acta en un solo lugar.
+// Son las mismas casillas que aparecen dentro de los pasos (se sincronizan).
+import type { CampoId } from "../data/etapas";
+import Campo from "./Campo.astro";
+
+const GRUPOS: { titulo: string; campos: CampoId[] }[] = [
+  { titulo: "Instalación", campos: ["habiles", "recibidas", "hInst"] },
+  { titulo: "Sufragio", campos: ["votaron", "noUsadas", "hFin"] },
+  { titulo: "Escrutinio", campos: ["hEsc", "dobladas", "eGob", "eCons", "eProv", "eDist"] },
+];
+---
+
+<section class="panel" data-panel="datos" hidden>
+  <p class="intro">Todos los números que pide el acta, con su versión en letras para copiar tal cual. Se llenan solos desde la checklist y viceversa.</p>
+  {GRUPOS.map((g) => (
+    <div class="grupo">
+      <h2>{g.titulo}</h2>
+      {g.campos.map((c) => (
+        <div class="dato"><Campo campo={c} ctx="datos" destacado /></div>
+      ))}
+    </div>
+  ))}
+</section>
+
+<style>
+  .panel { display: grid; gap: 18px; }
+  .intro { color: var(--muted); margin: 0; font-size: 0.95rem; }
+  .grupo { display: grid; gap: 10px; }
+  h2 { font-family: var(--f-display); font-size: 1rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin: 0; }
+  .dato { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+</style>
